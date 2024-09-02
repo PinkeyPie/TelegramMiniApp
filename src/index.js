@@ -3,13 +3,33 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {initMiniApp, mockTelegramEnv, parseInitData} from "@telegram-apps/sdk";
+import {initMiniApp, initMainButton, mockTelegramEnv, parseInitData, initUtils} from "@telegram-apps/sdk";
 
 const initializeTelegramSDK = async () => {
     try {
         console.log('initializeTelegramSDK');
         const [miniApp] = initMiniApp()
         await miniApp.ready()
+        miniApp.setHeaderColor('#fcb69f')
+
+        const [mainButton] = initMainButton()
+        mainButton.setParams({
+            backgroundColor: '#aa1388',
+            text: 'Share points!',
+            isVisible: true,
+            isEnabled: true
+        })
+        mainButton.show()
+        const utils = initUtils()
+        mainButton.on('click', () => {
+            try {
+                const score = localStorage.getItem('memory-game-score') || 0
+                utils.shareUrl(`Look! I have ${score} scores in game!`)
+                console.log('Window selecting chat for sending message')
+            } catch (error) {
+                console.error(error)
+            }
+        })
     } catch (error) {
         console.error('Error while initialize Telegram SDK', error)
         const initDataRaw = new URLSearchParams([
@@ -50,7 +70,6 @@ const initializeTelegramSDK = async () => {
             version: '7.2',
             platform: 'tdesktop'
         })
-
         console.log('Mock Telegram environment initialized')
     }
 }

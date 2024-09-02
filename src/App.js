@@ -62,7 +62,7 @@ function App() {
     useEffect(() => {
         if(state.flipped.length === 2) {
             dispatch({type: 'CHECK_MATCH'})
-            dispatch({type: 'INCREMET_TURN'})
+            dispatch({type: 'INCREMENT_TURN'})
         }
     }, [state.flipped]);
     useEffect(() => {
