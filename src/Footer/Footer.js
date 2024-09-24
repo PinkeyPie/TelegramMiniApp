@@ -1,6 +1,6 @@
 import './Footer.css'
 import {Component} from "react";
-import {Restore, Favorite, Archive} from "@mui/icons-material";
+import {Restore, Favorite, Archive, Comment} from "@mui/icons-material";
 import {BottomNavigation, BottomNavigationAction, Paper} from "@mui/material";
 
 class Footer extends Component {
@@ -29,8 +29,9 @@ class Footer extends Component {
                             this.changeTabDecorator(newValue)
                         }}>
                         <BottomNavigationAction label="Главное окно" icon={<Restore/>} value={0}/>
-                        <BottomNavigationAction label="Окно персонажа" icon={<Favorite/>} value={1}/>
-                        <BottomNavigationAction label="Посмотреть рекламу" icon={<Archive/>} value={2}/>
+                        <BottomNavigationAction label="Персонаж" icon={<Favorite/>} value={1}/>
+                        <BottomNavigationAction label="Телефон" icon={<Comment/>} value={2}/>
+                        <BottomNavigationAction label="Реклама" icon={<Archive/>} value={3}/>
                     </BottomNavigation>
                 </Paper>
             </div>

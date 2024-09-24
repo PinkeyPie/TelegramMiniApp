@@ -16,6 +16,9 @@ class App extends Component {
             prevTab: -1,
             tabAnimation: false
         }
+        this.headerHeight = 60
+        this.footerHeight = 70
+        this.bodyMargin = 20
     }
     updateWindowDimensions = (event) => {
         this.setState({width: window.innerWidth, height: window.innerHeight});
@@ -41,8 +44,10 @@ class App extends Component {
             prevTab: -1,
         })
     }
-    getBodyElement = (width, height, tab, className='') => {
+    getBodyElement = (tab, className='') => {
         let element = undefined
+        const width = this.state.width
+        const height = this.state.height - this.headerHeight - this.footerHeight - this.bodyMargin
         switch (tab) {
             case 0:
                 element = <Main width={width}
@@ -68,32 +73,45 @@ class App extends Component {
         }
         return element
     }
+    getAnimationName = (horizontal = false) => {
+        let animationName = ''
+        if(horizontal) {
+
+        } else {
+            const diff = this.state.currentTab - this.state.prevTab
+            if(diff > 0) {
+                animationName = 'leftToRight'
+            } else {
+                animationName = 'rightToLeft'
+            }
+        }
+        return animationName
+    }
+
     render() {
-        const headerHeight = 60;
-        const footerHeight = 70;
-        const bodyHeight = this.state.height - headerHeight - footerHeight - 20;
-        const width = this.state.width;
         if(this.state.tabAnimation) {
-            const prevTab = this.getBodyElement(width, bodyHeight, this.state.prevTab)
-            const nextTab = this.getBodyElement(width, bodyHeight, this.state.currentTab, 'leftToRight')
+            const animationName = this.getAnimationName()
+            const prevTab = this.getBodyElement(this.state.prevTab)
+            const nextTab = this.getBodyElement(this.state.currentTab, animationName)
             return (
-                <div className="App" style={{height: this.state.height,
-                    width: width}}>
+                <div className="App" style={{
+                    height: this.state.height,
+                    width: this.state.width}}>
                     <MainAppHeader/>
                     {prevTab}
                     {nextTab}
-                    <Footer changeMethod={this.changeTabWindow}/>
+                    <Footer tab={this.state.currentTab} changeMethod={this.changeTabWindow}/>
                 </div>
             )
         } else {
-            const body = this.getBodyElement(width, bodyHeight, this.state.currentTab)
-            const otherBody = this.getBodyElement(width, bodyHeight, this.state.currentTab + 1,
-                'bottomToTop')
+            const body = this.getBodyElement(this.state.currentTab)
             return (
-                <div className="App" style={{height: this.state.height, width: width}}>
+                <div className="App" style={{
+                    height: this.state.height,
+                    width: this.state.width}}>
                     <MainAppHeader/>
                     {body}
-                    <Footer changeMethod={this.changeTabWindow} />
+                    <Footer tab={this.state.currentTab} changeMethod={this.changeTabWindow} />
                 </div>
             )
         }
